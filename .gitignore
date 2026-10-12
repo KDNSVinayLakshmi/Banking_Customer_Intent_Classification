@@ -5,7 +5,8 @@ venv/
 .env
 .streamlit/secrets.toml
 .pytest_cache/
+
 data/*
 !data/.gitkeep
-#models/*
-#!models/.gitkeep
+
+models/distilbert-banking77/model.safetensors
