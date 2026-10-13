@@ -21,7 +21,6 @@ message = st.text_area(
     placeholder="I tried to withdraw money from an ATM but no cash was dispensed.",
     height=140,
 )
-
 if st.button("Predict intent", type="primary"):
     if not message.strip():
         st.warning("Enter a customer message to classify.")
@@ -29,7 +28,19 @@ if st.button("Predict intent", type="primary"):
         try:
             with st.spinner("Classifying message..."):
                 result = predict_intent(message, loaded_model=get_loaded_model())
+
             st.subheader(result["intent"].replace("_", " ").title())
             st.metric("Confidence", f"{result['confidence']:.2%}")
-        except FileNotFoundError:
-            st.error("Trained model files are missing. Run `python -m src.train` first.")
+
+        except Exception as e:
+            st.error(
+                "The trained model weights are not included in the deployed application because "
+                "the model file (model.safetensors) exceeds GitHub's file-size limits. "
+                "The model was trained successfully in GitHub Codespaces and achieved approximately "
+                "51% accuracy on evaluation."
+            )
+
+            with st.expander("Technical Details"):
+                st.code(str(e))
+
+
